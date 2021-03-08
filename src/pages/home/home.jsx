@@ -4,11 +4,15 @@ import L from "leaflet";
 import "./leaflet_minimaps";
 import "./css/leaflet.css";
 import "../../App.css";
+import logo from "./img/logo.svg";
+import mg from "./img/mg.svg";
 
 class Home extends Component {
   state = {
     basemaps: [],
     id: 0,
+    legend: false,
+    search: "",
   };
 
   parseXml = (xml, arrayTags) => {
@@ -47,6 +51,16 @@ class Home extends Component {
     return result;
   };
 
+  updateSearch = (event) => {
+    var search = event.target.value;
+    this.minimap.filter(search);
+    this.setState({ search });
+  };
+
+  toggleLegend = () => {
+    this.setState({ legend: !this.state.legend });
+  };
+
   setId = (id) => {
     this.setState({ id });
   };
@@ -77,7 +91,11 @@ class Home extends Component {
         '<a title="Swiss Federal Office of Topography" href="https://www.swisstopo.admin.ch/">swisstopo</a>';
       let title = l["ows:Title"]["#text"];
       let description = l["ows:Abstract"]["#text"];
-      return { url, attribution, title, description };
+      let legend = false;
+      if ("LegendURL" in l["Style"]) {
+        legend = l["Style"]["LegendURL"]["xlink:href"];
+      }
+      return { url, attribution, title, description, legend };
     });
     basemaps = basemaps.sort(this.compare);
 
@@ -120,7 +138,7 @@ class Home extends Component {
 
     baselayers[basemaps[0].title].addTo(map);
 
-    L.control.layers
+    this.minimap = L.control.layers
       .minimap(
         baselayers,
         {},
@@ -135,17 +153,68 @@ class Home extends Component {
   }
 
   render() {
-    var { basemaps, id } = this.state;
+    var { basemaps, id, legend, search } = this.state;
     document.title = "SwissTopo Basemaps";
     return (
       <React.Fragment>
         <div id="map" className="home">
+          <div className="logo">
+            <img src={logo} alt="Logo" />
+          </div>
+          <div className="search">
+            <input
+              value={search}
+              onChange={this.updateSearch}
+              type="text"
+              placeholder="Search for a map"
+            ></input>
+            <img src={mg} alt="manifying glass" />
+          </div>
           {basemaps.length > 0 && (
-            <div className="description">
-              <div className="title">{basemaps[id].title}</div>
-              <div>{basemaps[id].description}</div>
-              <div>{basemaps[id].url}</div>
-            </div>
+            <React.Fragment>
+              {basemaps[id].legend && (
+                <div className="legend">
+                  <button onClick={this.toggleLegend}>Legend</button>
+                  <div
+                    className={legend ? "legend-image" : "legend-image hide"}
+                  >
+                    <img src={basemaps[id].legend} alt="Legend" />
+                  </div>
+                </div>
+              )}
+              <div className="description">
+                <div className="title">{basemaps[id].title}</div>
+                <div>{basemaps[id].description}</div>
+                <div className="url">
+                  <div>
+                    <div className="blue">L.</div>
+                    <div className="yellow">tileLayer</div>(
+                  </div>
+                  <div>
+                    <div className="orange" style={{ paddingLeft: "10px" }}>
+                      "{basemaps[id].url}",
+                    </div>
+                  </div>
+                  <div style={{ paddingLeft: "10px" }}>&#123;</div>
+                  <div>
+                    <div className="blue" style={{ paddingLeft: "20px" }}>
+                      attribution:
+                    </div>
+                    <div>
+                      <div className="orange" style={{ paddingLeft: "30px" }}>
+                        '&lt;a title="Swiss Federal Office of Topography"
+                        href="https://www.swisstopo.admin.ch/"&gt;swisstopo&lt;/a&gt;'
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ paddingLeft: "10px" }}>&#125;</div>
+                  <div>
+                    ).<div className="yellow">addTo</div>(
+                    <div className="blue">map</div>);
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
           )}
         </div>
       </React.Fragment>

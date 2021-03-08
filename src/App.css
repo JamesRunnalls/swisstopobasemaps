@@ -27,6 +27,111 @@ a:hover {
   top: 0;
 }
 
+.legend {
+  z-index: 999;
+  position: absolute;
+  right: calc(40vw + 10px);
+  top: 5px;
+  text-align: right;
+}
+
+.legend button {
+  background-color: white;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: grey;
+}
+
+.legend button:hover {
+  background-color: rgba(255, 255, 255, 1);
+  color: black;
+  border-color: black;
+}
+
+.legend .legend-image {
+  background-color: white;
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  max-width: calc(60vw - 40px);
+}
+
+.legend .legend-image img {
+  max-width: 100%;
+}
+
+.legend .legend-image.hide {
+  display: none;
+}
+
+.logo {
+  position: fixed;
+  left: 10px;
+  top: 10px;
+  z-index: 999;
+}
+
+.logo img {
+  width: 35px;
+}
+
+.url {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.url .blue {
+  display: inline-block;
+  color: #9cdcfe;
+}
+
+.url .yellow {
+  display: inline-block;
+  color: #d7ba7d;
+}
+
+.url .orange {
+  display: inline-block;
+  color: #ce9178;
+}
+
+.search {
+  z-index: 999;
+  position: fixed;
+  right: 5px;
+  top: 5px;
+  width: 40vw;
+}
+
+.search input {
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.search input:hover {
+  border-color: black;
+}
+
+.search img {
+  opacity: 0.2;
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  height: 20px;
+}
+
 .description {
   position: absolute;
   left: 10px;
@@ -37,6 +142,8 @@ a:hover {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 5px;
+  max-height: 33%;
+  overflow-y: auto;
 }
 
 .description .title {
@@ -92,7 +199,7 @@ a:hover {
 
 .leaflet-control-container .leaflet-top.leaflet-right {
   margin: 0;
-  height: 100%;
+  top: 40px;
 }
 
 .leaflet-control-layers.leaflet-control-layers-expanded.leaflet-control-layers-minimap.leaflet-control {
